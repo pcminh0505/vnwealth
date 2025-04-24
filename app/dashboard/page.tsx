@@ -4,10 +4,17 @@ import { DataTable } from "@/components/data-table";
 import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
 
-import data from "./data.json";
+import MOCK_DATA from "./data.json";
 
-export default function Page() {
+export default async function Page() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
+    redirect("/login");
+  }
   return (
     <SidebarProvider
       style={
@@ -27,7 +34,7 @@ export default function Page() {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
-              <DataTable data={data} />
+              <DataTable data={MOCK_DATA} />
             </div>
           </div>
         </div>
