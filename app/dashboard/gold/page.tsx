@@ -2,18 +2,27 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGoldPrice } from "@/hooks/useCafeF";
-import { useState } from "react";
 import {
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { useGoldPrice } from "@/hooks/useCafeF";
+import { formatDate } from "date-fns";
+import { useState } from "react";
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
+
+const chartConfig = {
+  buy: {
+    label: "Buy",
+    color: "var(--chart-2)",
+  },
+  sell: {
+    label: "Sell",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig;
 
 export default function GoldPage() {
   const [interval, setInterval] = useState<"1w" | "2w" | "1m">("1m");
@@ -22,7 +31,6 @@ export default function GoldPage() {
   if (isLoading) return <div className="p-6">Loading gold price data...</div>;
   if (isError || !data) return <div className="p-6">Failed to load data</div>;
 
-  const gold = data.goldPriceWorlds;
   const chartData = data.goldPriceWorldHistories
     .filter((item) => {
       const days = interval === "1m" ? 30 : interval === "2w" ? 14 : 7;
@@ -31,10 +39,11 @@ export default function GoldPage() {
       return new Date(item.createdAt) >= cutoff;
     })
     .map((item) => ({
-      time: new Date(item.createdAt).toLocaleString("vi-VN"),
+      time: formatDate(new Date(item.createdAt), "MM/dd"),
       buy: item.buyPrice,
       sell: item.sellPrice,
-    }));
+    }))
+    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
   return (
     <div className="p-6 space-y-6">
@@ -114,7 +123,7 @@ export default function GoldPage() {
                 key={key}
                 variant={interval === key ? "default" : "outline"}
                 size="sm"
-                onClick={() => setInterval(key as any)}
+                onClick={() => setInterval(key as never)}
               >
                 {key.toUpperCase()}
               </Button>
@@ -122,27 +131,66 @@ export default function GoldPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" tick={{ fontSize: 10 }} />
-              <YAxis />
-              <Tooltip />
-              <Legend />
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
               <Line
-                type="monotone"
                 dataKey="buy"
-                stroke="#8884d8"
-                name="Buy Price"
-              />
-              <Line
                 type="monotone"
+                stroke="var(--color-buy)"
+                strokeWidth={2}
+                dot={{
+                  fill: "var(--color-buy)",
+                }}
+                activeDot={{
+                  r: 6,
+                }}
+              >
+                <LabelList
+                  position="bottom"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Line>
+              <Line
                 dataKey="sell"
-                stroke="#82ca9d"
-                name="Sell Price"
-              />
+                type="monotone"
+                stroke="var(--color-sell)"
+                strokeWidth={2}
+                dot={{
+                  fill: "var(--color-sell)",
+                }}
+                activeDot={{
+                  r: 6,
+                }}
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Line>
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>
