@@ -1,5 +1,4 @@
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { TokenTable } from "@/components/data-table";
 import { SectionCards } from "@/components/section-cards";
 
 export default function Page() {
@@ -8,10 +7,6 @@ export default function Page() {
       <SectionCards />
       <div className="px-4 lg:px-6">
         <ChartAreaInteractive />
-      </div>
-
-      <div className="px-4 lg:px-6">
-        <TokenTable />
       </div>
     </div>
   );

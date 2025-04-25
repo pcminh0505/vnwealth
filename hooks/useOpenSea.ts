@@ -14,7 +14,7 @@ async function getFloorPrice(slug: string): Promise<number | null> {
 
   const data: OpenSeaCollectionStats = await res.json();
 
-  return data.total.floor_price;
+  return data.total.floor_price ?? null;
 }
 
 export function useFloorPrices(slugs: string[]) {

@@ -1,6 +1,7 @@
 // app/api/opensea/floor/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { OpenSeaCollectionStats } from "@/types/opensea";
 
 const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY;
 
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 
   try {
-    const { data } = await axios.get(
+    const { data } = await axios.get<OpenSeaCollectionStats>(
       `https://api.opensea.io/api/v2/collections/${slug}/stats`,
       {
         headers: {
@@ -19,8 +20,6 @@ export async function POST(req: NextRequest) {
         },
       }
     );
-
-    console.log(data);
 
     return NextResponse.json(data);
   } catch (error) {

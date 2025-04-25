@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { useFloorPrices } from "@/hooks/useOpenSeaCollectionFloorPrice";
+import { useFloorPrices } from "@/hooks/useOpenSea";
 import { OpenSeaColor, OpenSeaGray } from "@/components/svg/opensea";
 
 const nfts = [
@@ -322,7 +322,7 @@ export default function NFT() {
                 alt={nft.name || "NFT image"}
                 width={500}
                 height={500}
-                className="w-full h-[250px] object-cover"
+                className="w-full h-auto object-contain bg-muted aspect-square"
                 unoptimized
               />
               <div className="p-4 flex justify-between items-center">
