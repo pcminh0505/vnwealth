@@ -1,18 +1,21 @@
-import { CafeFInterestRate } from "@/types/cafef";
+import { CafeFExchangeRate } from "@/types/cafef";
 import axios from "axios";
 import { NextResponse } from "next/server";
 import { format } from "date-fns";
 
 export async function GET() {
-  const time = format(new Date(), "dd/MM/yyyy");
-  console.log(time);
+  const yesterday = format(
+    new Date(new Date().setDate(new Date().getDate() - 1)),
+    "dd/MM/yyyy"
+  );
+
   try {
     const res = await axios.get<{
-      Data: CafeFInterestRate[];
+      Data: CafeFExchangeRate[];
       Message: string | null;
       Success: boolean;
     }>(
-      `https://cafef.vn/du-lieu/ajax/exchangerate/ajaxratecurrency.ashx?time=${time}`
+      `https://cafef.vn/du-lieu/ajax/exchangerate/ajaxratecurrency.ashx?time=${yesterday}`
     );
     const data = res.data.Data;
 

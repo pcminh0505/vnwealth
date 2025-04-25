@@ -1,17 +1,26 @@
 "use client";
 
-import { useSavingRates } from "@/hooks/useCafeF";
+import { useSavingRates, useExchangeRates } from "@/hooks/useCafeF";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./savings-rate-columns";
-import { Tabs } from "@radix-ui/react-tabs";
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { columns as exchangeRateColumns } from "./exchange-rate-columns";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SavingsPage() {
   const { data, isLoading, isError } = useSavingRates();
+  const {
+    data: exchangeRates,
+    isLoading: exchangeRatesLoading,
+    isError: exchangeRatesError,
+  } = useExchangeRates();
 
-  if (isLoading) return <p className="p-6">Loading...</p>;
-  if (isError || !data) return <p className="p-6">Failed to load data</p>;
+  console.log(exchangeRates);
+
+  if (isLoading || exchangeRatesLoading)
+    return <p className="p-6">Loading...</p>;
+  if (isError || exchangeRatesError || !data || !exchangeRates)
+    return <p className="p-6">Failed to load data</p>;
 
   const pivotData = data.map((bank) => {
     return {
@@ -41,13 +50,9 @@ export default function SavingsPage() {
               <DataTable columns={columns} data={pivotData} />
             </TabsContent>
             <TabsContent value="exchange-rates">
-              <DataTable columns={columns} data={pivotData} />
+              <DataTable columns={exchangeRateColumns} data={exchangeRates} />
             </TabsContent>
           </Tabs>
-
-          {/* <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={pivotData} />
-          </div> */}
         </CardContent>
       </Card>
     </div>

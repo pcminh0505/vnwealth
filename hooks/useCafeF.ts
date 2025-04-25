@@ -27,6 +27,7 @@ export function useExchangeRates() {
 
       if (!res.ok) throw new Error("Failed to fetch exchange rates");
       const data: CafeFExchangeRate[] = await res.json();
+      console.log(data);
       return data;
     },
     staleTime: 1000 * 60 * 10, // 10 mins

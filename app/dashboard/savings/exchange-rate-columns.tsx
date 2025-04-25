@@ -1,35 +1,23 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ColumnDef } from "@tanstack/react-table";
+import { CafeFExchangeRate } from "@/types/cafef";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { ArrowDown, ArrowUp } from "lucide-react";
+const getCurrencyIcon = (currency: string) => {
+  return `https://cafef1.mediacdn.vn/Images/ExchangeRate/flag_${currency}.svg`;
+};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SortableHeader = ({ column, label }: any) => (
-  <button
-    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    className="inline-flex items-center gap-1 font-medium hover:underline"
-  >
-    {label}
-    {column.getIsSorted() === "asc" && <ArrowUp className="w-3 h-3" />}
-    {column.getIsSorted() === "desc" && <ArrowDown className="w-3 h-3" />}
-  </button>
-);
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const columns: ColumnDef<any>[] = [
+export const columns: ColumnDef<CafeFExchangeRate>[] = [
   {
-    accessorKey: "name",
-    header: ({ column }) => <SortableHeader column={column} label="Bank" />,
-    enableSorting: true,
+    accessorKey: "currencyName",
+    header: "Name",
     cell: ({ row }) => {
-      const icon = row.original.icon;
-      const name = row.original.name;
+      const name = row.original.currencyName;
       return (
         <div className="flex items-center gap-2">
           <Avatar className="w-6 h-6">
-            <AvatarImage src={icon} className="rounded-full" />
+            <AvatarImage src={getCurrencyIcon(name)} className="rounded-full" />
             <AvatarFallback>{name}</AvatarFallback>
           </Avatar>
           <span className="font-medium">{name}</span>
@@ -38,38 +26,19 @@ export const columns: ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: "0m",
-    header: ({ column }) => <SortableHeader column={column} label="Flexible" />,
-    enableSorting: true,
+    accessorKey: "buyCash",
+    header: "Buy Cash", // Format currency VND
+    cell: ({ row }) =>
+      row.original.buyCash ? row.original.buyCash.toLocaleString("vi-VN") : "",
   },
   {
-    accessorKey: "1m",
-    header: ({ column }) => <SortableHeader column={column} label="1M" />,
-    enableSorting: true,
+    accessorKey: "purchaseTransfer",
+    header: "Purchase Transfer",
+    cell: ({ row }) => row.original.purchaseTransfer.toLocaleString("vi-VN"),
   },
   {
-    accessorKey: "3m",
-    header: ({ column }) => <SortableHeader column={column} label="3M" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "6m",
-    header: ({ column }) => <SortableHeader column={column} label="6M" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "12m",
-    header: ({ column }) => <SortableHeader column={column} label="12M" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "18m",
-    header: ({ column }) => <SortableHeader column={column} label="18M" />,
-    enableSorting: true,
-  },
-  {
-    accessorKey: "24m",
-    header: ({ column }) => <SortableHeader column={column} label="24M" />,
-    enableSorting: true,
+    accessorKey: "price",
+    header: "Price", // Format currency VND
+    cell: ({ row }) => row.original.price.toLocaleString("vi-VN"),
   },
 ];

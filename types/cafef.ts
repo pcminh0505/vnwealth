@@ -21,8 +21,8 @@ export interface CafeFExchangeRate {
   priceStatusPercent: number;
   timeSpinString: string;
   timeSpin: number;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: string; // Format "/Date(1745424969600)/"
+  createdAt: string; // Format "/Date(1745424969600)/"
   tagType: string;
   index: number;
   stt: number;
