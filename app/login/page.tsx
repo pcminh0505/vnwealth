@@ -98,7 +98,7 @@ export default function LoginPage() {
     supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${location.origin}/auth/callback`,
+        redirectTo: `/auth/callback`,
       },
     });
   };
