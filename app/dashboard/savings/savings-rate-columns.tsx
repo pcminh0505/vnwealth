@@ -1,27 +1,14 @@
 "use client";
 
+import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ColumnDef } from "@tanstack/react-table";
-
-import { ArrowDown, ArrowUp } from "lucide-react";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SortableHeader = ({ column, label }: any) => (
-  <button
-    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    className="inline-flex items-center gap-1 font-medium hover:underline"
-  >
-    {label}
-    {column.getIsSorted() === "asc" && <ArrowUp className="w-3 h-3" />}
-    {column.getIsSorted() === "desc" && <ArrowDown className="w-3 h-3" />}
-  </button>
-);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => <SortableHeader column={column} label="Bank" />,
+    header: "Bank",
     enableSorting: true,
     cell: ({ row }) => {
       const icon = row.original.icon;
@@ -39,37 +26,51 @@ export const columns: ColumnDef<any>[] = [
   },
   {
     accessorKey: "0m",
-    header: ({ column }) => <SortableHeader column={column} label="Flexible" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Flexible" />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "1m",
-    header: ({ column }) => <SortableHeader column={column} label="1M" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="1M" />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "3m",
-    header: ({ column }) => <SortableHeader column={column} label="3M" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="3M" />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "6m",
-    header: ({ column }) => <SortableHeader column={column} label="6M" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="6M" />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "12m",
-    header: ({ column }) => <SortableHeader column={column} label="12M" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="12M" />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "18m",
-    header: ({ column }) => <SortableHeader column={column} label="18M" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="18M" />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "24m",
-    header: ({ column }) => <SortableHeader column={column} label="24M" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="24M" />
+    ),
     enableSorting: true,
   },
 ];

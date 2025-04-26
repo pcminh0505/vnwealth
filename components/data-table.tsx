@@ -4,6 +4,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -17,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { DataTablePagination } from "./data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,9 +35,15 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     state: { sorting },
+    initialState: {
+      pagination: {
+        pageSize: 50, //custom default page size
+      },
+    },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -68,6 +76,8 @@ export function DataTable<TData, TValue>({
           ))}
         </TableBody>
       </Table>
+
+      <DataTablePagination table={table} />
     </div>
   );
 }
