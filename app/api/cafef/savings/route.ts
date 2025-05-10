@@ -11,7 +11,6 @@ export async function GET() {
     }>("https://cafef.vn/du-lieu/ajax/ajaxlaisuatnganhang.ashx");
     const data = res.data.Data;
 
-    console.log(data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("CafeF Interest Rate fetch error:", error);

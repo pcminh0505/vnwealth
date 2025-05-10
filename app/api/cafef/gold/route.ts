@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
     );
     const data = res.data.Data;
 
-    console.log(data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("CafeF Gold fetch error:", error);

@@ -15,8 +15,6 @@ export default function SavingsPage() {
     isError: exchangeRatesError,
   } = useExchangeRates();
 
-  console.log(exchangeRates);
-
   if (isLoading || exchangeRatesLoading)
     return <p className="p-6">Loading...</p>;
   if (isError || exchangeRatesError || !data || !exchangeRates)

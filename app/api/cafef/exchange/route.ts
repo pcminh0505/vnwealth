@@ -19,7 +19,6 @@ export async function GET() {
     );
     const data = res.data.Data;
 
-    console.log(data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("CafeF Exchange Rate fetch error:", error);
